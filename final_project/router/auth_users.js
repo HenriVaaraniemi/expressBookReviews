@@ -58,7 +58,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   const username = req.session.authorization.username;
 
   if (isbn && review){
-      books[isbn].reviews = {review, username};
+      books[isbn].reviews = {review, user: username};
       console.log(books[isbn]);
       return res.status(300).json({message: "Review posted"});
   }
@@ -73,7 +73,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn
   
     if (isbn && username){
-        delete books[isbn].reviews;
+        delete books[isbn].reviews[username];
         return res.status(300).json({message: "Review deleted"});
     }
     else{

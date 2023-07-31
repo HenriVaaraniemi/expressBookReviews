@@ -70,4 +70,78 @@ public_users.get('/review/:isbn',function (req, res) {
     res.send(books[isbn].reviews);
 });
 
+// getting list using Promise callbacks
+
+function getBooksPromise() {
+    return new Promise((resolve, reject)=> {
+        setTimeout(() => {
+            const bookList = Object.values(books);
+            resolve(bookList);
+        }, 1000);
+    });
+}
+
+getBooksPromise().then((books) => {
+    console.log("list of books: ", books);
+})
+
+//getting the book details based on ISBN
+
+function getBooksISBN(isbn) {
+    return new Promise((resolve, reject)=> {
+        setTimeout(() => {
+            const bookList = books[isbn];
+            if (bookList){
+                resolve(bookList);
+            }
+            else { reject(new Error("book not found"));
+        }
+            
+        }, 1000);
+    });
+}
+
+getBooksISBN(3).then((book) =>{
+    console.log("book found: ", book)
+})
+
+//get books based on author
+
+function getBooksAuthor(author) {
+    return new Promise((resolve, reject)=> {
+        setTimeout(() => {
+            const bookList = Object.values(books).filter(book => book.author.toLowerCase() === author.toLowerCase());
+            if (bookList.length >0){
+                resolve(bookList);
+            }
+            else { reject(new Error("book not found"));
+        }
+            
+        }, 1000);
+    });
+}
+
+getBooksAuthor("Unknown").then((bookList) =>{
+    console.log("Books by author: ", bookList)
+})
+
+// get books based on title
+
+function getBooksTitle(title) {
+    return new Promise((resolve, reject)=> {
+        setTimeout(() => {
+            const bookList = Object.values(books).filter(book => book.title.toLowerCase() === title.toLowerCase());
+            if (bookList.length >0){
+                resolve(bookList);
+            }
+            else { reject(new Error("book not found"));
+        }
+            
+        }, 1000);
+    });
+}
+
+getBooksTitle("Fairy Tales").then((bookList) =>{
+    console.log("Books with title: ", bookList)
+})
 module.exports.general = public_users;
