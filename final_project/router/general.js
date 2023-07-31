@@ -6,8 +6,15 @@ const public_users = express.Router();
 
 
 public_users.post("/register", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented1"});
+  const username = req.body.username;
+  const password = req.body.password;
+  if (username && password){
+      users.push({"username":username,"password":password});
+      res.send("created user " + username);
+  }
+  else{
+      res.send("something went wrong");
+  }
 });
 
 // Get the book list available in the shop
@@ -28,30 +35,39 @@ public_users.get('/isbn/:isbn',function (req, res) {
 public_users.get('/author/:author',function (req, res) {
   const author = req.params.author;
   const pituus = Object.keys(books).length;
- // for (let i = 0; i<pituus; i++){
- //   if (author == books.author[i]){
- //       res.send(books[i]);
- //   }
- //   else{
+  var searchResult = [];
+  for (var i = 0; i<pituus; i++){
+    if (author == books[(i+1)].author){
+        searchResult.push(books[i+1])
         
-  //  }
- // };
+    }
+
+  };
+  res.send(searchResult);
   
-  
-  res.send(books);
+  //res.send(books[(1+1)].author);
   //res.send(author);
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented3"});
+    const title = req.params.title;
+    const pituus = Object.keys(books).length;
+    var searchResult = [];
+    for (var i = 0; i<pituus; i++){
+      if (title == books[(i+1)].title){
+          searchResult.push(books[i+1])
+          
+      }
+  
+    };
+    res.send(searchResult);
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented4"});
+    const isbn = req.params.isbn;
+    res.send(books[isbn].reviews);
 });
 
 module.exports.general = public_users;
